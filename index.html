@@ -1,1 +1,258 @@
-<!DOCTYPE html> <html lang="en"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>Edward Schwarz</title>     <link rel="preconnect" href="https://fonts.googleapis.com">     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=La+Belle+Aurore&display=swap" rel="stylesheet">          <style>         :root {             /* Color Palette */             --bg-color: #c0c0c0; /* Darker gray */             --primary-color: #0e4d5c; /* Rich Teal/Navy mix */             --accent-color: #b87333; /* Warm Copper base */         }          body, html {             margin: 0;             padding: 0;             width: 100%;             height: 100%;             display: flex;             flex-direction: column;             justify-content: center;             align-items: center;             background-color: var(--bg-color);             overflow: hidden;             font-family: 'Kalam', cursive;         }          .container {             width: 90%;             max-width: 800px;             aspect-ratio: 16/9;             position: relative;             margin-bottom: 20px;         }          svg {             width: 100%;             height: 100%;             overflow: visible;         }          /* --- Typography Styling --- */                  text {             text-anchor: middle;             fill-opacity: 0; /* Fill starts transparent */             opacity: 0; /* Ensure hidden at start */         }          .text-hi {             font-family: 'La Belle Aurore', cursive;             font-size: 60px;             fill: var(--primary-color);             stroke: var(--primary-color);             stroke-width: 1.5px;             stroke-linecap: round;             stroke-linejoin: round;         }          .text-intro-rest {             font-family: 'La Belle Aurore', cursive;             font-size: 50px;             fill: var(--primary-color);             stroke: var(--primary-color);             stroke-width: 1px;             stroke-linecap: round;             stroke-linejoin: round;         }          .text-bridge {             font-family: 'La Belle Aurore', cursive;             font-size: 32px;             fill: var(--primary-color);             stroke: var(--primary-color);             stroke-width: 0.8px;         }          .text-name {             font-family: 'Kalam', cursive;             font-weight: 700;             font-size: 140px;             fill: url(#goldGradient);             stroke: var(--accent-color);             stroke-width: 1.5px;             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));         }          .flourish {             fill: none;             stroke: url(#goldGradient);             stroke-width: 6;             stroke-linecap: round;             opacity: 0;         }          /* --- Animations --- */          @keyframes writeStroke {             to { stroke-dashoffset: 0; }         }          @keyframes fillIn {             to { fill-opacity: 1; }         }          @keyframes fadeShrink {             to {                 opacity: 0.2;                 transform: scale(0.85) translateY(-60px);             }         }          @keyframes fadeIn {             to { opacity: 1; }         }          @keyframes drawPath {             to { stroke-dashoffset: 0; opacity: 1; }         }          .replay-button {             padding: 10px 20px;             font-size: 16px;             font-family: 'Kalam', cursive;             background-color: var(--primary-color);             color: white;             border: none;             border-radius: 5px;             cursor: pointer;             transition: background-color 0.3s ease;             margin-bottom: 15px; /* Space between buttons */         }          .replay-button:hover {             background-color: #083842;         }          /* New LinkedIn Button Styles */         .linkedin-button {             /* Double the padding and font-size of replay button */             padding: 20px 40px;              font-size: 32px;                          font-family: 'Kalam', cursive;             background-color: var(--primary-color); /* Consistent theme color */             color: white;             text-decoration: none; /* Remove underline */             border-radius: 10px;             transition: all 0.3s ease;             display: inline-block;             box-shadow: 0 4px 6px rgba(0,0,0,0.1);         }          .linkedin-button:hover {             background-color: #083842;             transform: translateY(-2px); /* Subtle lift on hover */             box-shadow: 0 6px 8px rgba(0,0,0,0.2);         }      </style> </head> <body>      <div class="container">         <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">                          <defs>                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">                     <stop offset="0%" style="stop-color:#b87333;stop-opacity:1" />                     <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />                     <stop offset="100%" style="stop-color:#b87333;stop-opacity:1" />                 </linearGradient>             </defs>              <g id="intro-group" style="transform-origin: center center;">                 <text x="50%" y="35%" id="hi-text" class="text-hi">                     Hi!                 </text>                 <text x="50%" y="55%" id="intro-text-rest" class="text-intro-rest">                     I'm Edward Schwarz                 </text>             </g>              <text x="50%" y="55%" id="bridge-text" class="text-bridge">                 But you can call me             </text>              <text x="50%" y="88%" id="name-text" class="text-name">                 Ed             </text>              <path id="underline-path" class="flourish"                    d="M330 395 Q 400 415, 470 390" />          </svg>     </div>      <button class="replay-button" onclick="replayAnimation()">Replay Animation</button>          <!-- New LinkedIn Button -->     <a href="https://www.linkedin.com/in/edwardschwarz" target="_blank" class="linkedin-button">LinkedIn</a>      <script>         const elementsConfig = [             { id: 'hi-text', length: 300 },             { id: 'intro-text-rest', length: 1500 },             { id: 'bridge-text', length: 1000 },                  { id: 'name-text', length: 2000 },             { id: 'underline-path', length: 500 }         ];          elementsConfig.forEach(config => {             const el = document.getElementById(config.id);             if (el) {                 el.style.strokeDasharray = config.length;                 el.style.strokeDashoffset = config.length;                 el.style.setProperty('--init-len', config.length);             }         });          function replayAnimation() {             const container = document.querySelector('.container');                          // Clear old animations             const ids = ['hi-text', 'intro-text-rest', 'bridge-text', 'name-text', 'underline-path', 'intro-group'];             ids.forEach(id => {                 const el = document.getElementById(id);                 el.style.animation = 'none';                 el.style.opacity = ''; // Reset to CSS value (0)                 el.style.transform = '';                 el.style.fillOpacity = '';                 const initLen = el.style.getPropertyValue('--init-len');                 if (initLen) el.style.strokeDashoffset = initLen;             });              void container.offsetWidth; // Trigger reflow              // --- Timeline ---                          // 1. "Hi!"             const hi = document.getElementById('hi-text');             hi.style.animation = `fadeIn 0.01s forwards, writeStroke 1s ease-out forwards, fillIn 0.5s ease-out forwards`;             hi.style.animationDelay = `0.5s, 0.5s, 1.2s`;              // 2. "I'm Edward Schwarz"             const intro = document.getElementById('intro-text-rest');             intro.style.animation = `fadeIn 0.01s forwards, writeStroke 2s ease-in-out forwards, fillIn 0.8s ease-out forwards`;             intro.style.animationDelay = `1.5s, 1.5s, 3.0s`;              // 3. Move Up             const group = document.getElementById('intro-group');             group.style.animation = `fadeShrink 1.5s ease-in-out forwards`;             group.style.animationDelay = `4.0s`;              // 4. "But you can call me"             const bridge = document.getElementById('bridge-text');             bridge.style.animation = `fadeIn 0.01s forwards, writeStroke 1.5s ease-in-out forwards, fillIn 0.8s ease-out forwards`;             bridge.style.animationDelay = `4.5s, 4.5s, 5.5s`;              // 5. "Ed"             // Starts 1s after previous line finishes (6.0 + 1.0 = 7.0)             const name = document.getElementById('name-text');             name.style.animation = `fadeIn 0.01s forwards, writeStroke 2s ease-in-out forwards, fillIn 1s ease-out forwards`;             name.style.animationDelay = `7.0s, 7.0s, 8.5s`;              // 6. Underline             const line = document.getElementById('underline-path');             line.style.animation = `drawPath 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards`;             line.style.animationDelay = `9.0s`;         }          document.addEventListener('DOMContentLoaded', replayAnimation);     </script>  </body> </html>  
+<!DOCTYPE html> <html lang="en"> 
+
+<head>    
+	<meta charset="UTF-8">    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>Edward Schwarz</title>    
+	<link rel="preconnect" href="https://fonts.googleapis.com">    
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
+	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=La+Belle+Aurore&display=swap" rel="stylesheet">          <style>
+		:root {
+			/* Color Palette */
+			--bg-color: #c0c0c0;
+			/* Darker gray */
+			--primary-color: #0e4d5c;
+			/* Rich Teal/Navy mix */
+			--accent-color: #b87333;
+			/* Warm Copper base */
+		}
+
+		body,
+		html {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			background-color: var(--bg-color);
+			overflow: hidden;
+			font-family: 'Kalam', cursive;
+		}
+
+		.container {
+			width: 90%;
+			max-width: 800px;
+			aspect-ratio: 16/9;
+			position: relative;
+			margin-bottom: 20px;
+		}
+
+		svg {
+			width: 100%;
+			height: 100%;
+			overflow: visible;
+		}
+
+		/* --- Typography Styling --- */
+		text {
+			text-anchor: middle;
+			fill-opacity: 0;
+			/* Fill starts transparent */
+			opacity: 0;
+			/* Ensure hidden at start */
+		}
+
+		.text-hi {
+			font-family: 'La Belle Aurore', cursive;
+			font-size: 60px;
+			fill: var(--primary-color);
+			stroke: var(--primary-color);
+			stroke-width: 1.5px;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.text-intro-rest {
+			font-family: 'La Belle Aurore', cursive;
+			font-size: 50px;
+			fill: var(--primary-color);
+			stroke: var(--primary-color);
+			stroke-width: 1px;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.text-bridge {
+			font-family: 'La Belle Aurore', cursive;
+			font-size: 32px;
+			fill: var(--primary-color);
+			stroke: var(--primary-color);
+			stroke-width: 0.8px;
+		}
+
+		.text-name {
+			font-family: 'Kalam', cursive;
+			font-weight: 700;
+			font-size: 140px;
+			fill: url(#goldGradient);
+			stroke: var(--accent-color);
+			stroke-width: 1.5px;
+			filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15));
+		}
+
+		.flourish {
+			fill: none;
+			stroke: url(#goldGradient);
+			stroke-width: 6;
+			stroke-linecap: round;
+			opacity: 0;
+		}
+
+		/* --- Animations --- */
+		@keyframes writeStroke {
+			to {
+				stroke-dashoffset: 0;
+			}
+		}
+
+		@keyframes fillIn {
+			to {
+				fill-opacity: 1;
+			}
+		}
+
+		@keyframes fadeShrink {
+			to {
+				opacity: 0.2;
+				transform: scale(0.85) translateY(-60px);
+			}
+		}
+
+		@keyframes fadeIn {
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes drawPath {
+			to {
+				stroke-dashoffset: 0;
+				opacity: 1;
+			}
+		}
+
+		.replay-button {
+			padding: 10px 20px;
+			font-size: 16px;
+			font-family: 'Kalam', cursive;
+			background-color: var(--primary-color);
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			margin-bottom: 15px;
+			/* Space between buttons */
+		}
+
+		.replay-button:hover {
+			background-color: #083842;
+		}
+
+		/* New LinkedIn Button Styles */
+		.linkedin-button {
+			/* Double the padding and font-size of replay button */
+			padding: 20px 40px;
+			font-size: 32px;
+			font-family: 'Kalam', cursive;
+			background-color: var(--primary-color);
+			/* Consistent theme color */
+			color: white;
+			text-decoration: none;
+			/* Remove underline */
+			border-radius: 10px;
+			transition: all 0.3s ease;
+			display: inline-block;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.linkedin-button:hover {
+			background-color: #083842;
+			transform: translateY(-2px);
+			/* Subtle lift on hover */
+			box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+		}
+	</style> 
+</head> 
+
+<body>      <div class="container">         <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">                          <defs>                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">                    
+					<stop offset="0%" style="stop-color:#b87333;stop-opacity:1" />                    
+					<stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />                    
+					<stop offset="100%" style="stop-color:#b87333;stop-opacity:1" />                
+				</linearGradient>             </defs>              <g id="intro-group" style="transform-origin: center center;">                 <text x="50%" y="35%" id="hi-text" class="text-hi">                     Hi!                 </text>                 <text x="50%" y="55%" id="intro-text-rest" class="text-intro-rest">                     I'm Edward Schwarz                 </text>             </g>              <text x="50%" y="55%" id="bridge-text" class="text-bridge">                 But you can call me             </text>              <text x="50%" y="88%" id="name-text" class="text-name">                 Ed             </text>             
+			<path id="underline-path" class="flourish"                    d="M330 395 Q 400 415, 470 390" />         
+		</svg>     </div>      <button class="replay-button" onclick="replayAnimation()">Replay Animation</button>          <!-- New LinkedIn Button -->     <a href="https://www.linkedin.com/in/edwardschwarz" target="_blank" class="linkedin-button">LinkedIn</a>      <script>
+		const elementsConfig = [
+			{ id: 'hi-text', length: 300 },
+			{ id: 'intro-text-rest', length: 1500 },
+			{ id: 'bridge-text', length: 1000 },
+			{ id: 'name-text', length: 2000 },
+			{ id: 'underline-path', length: 500 }
+		];
+
+		elementsConfig.forEach(config => {
+			const el = document.getElementById(config.id);
+			if (el) {
+				el.style.strokeDasharray = config.length;
+				el.style.strokeDashoffset = config.length;
+				el.style.setProperty('--init-len', config.length);
+			}
+		});
+
+		function replayAnimation() {
+			const container = document.querySelector('.container');
+
+			// Clear old animations
+			const ids = ['hi-text', 'intro-text-rest', 'bridge-text', 'name-text', 'underline-path', 'intro-group'];
+			ids.forEach(id => {
+				const el = document.getElementById(id);
+				el.style.animation = 'none';
+				el.style.opacity = ''; // Reset to CSS value (0)
+				el.style.transform = '';
+				el.style.fillOpacity = '';
+				const initLen = el.style.getPropertyValue('--init-len');
+				if (initLen) el.style.strokeDashoffset = initLen;
+			});
+
+			void container.offsetWidth; // Trigger reflow
+
+			// --- Timeline ---
+
+			// 1. "Hi!"
+			const hi = document.getElementById('hi-text');
+			hi.style.animation = `fadeIn 0.01s forwards, writeStroke 1s ease-out forwards, fillIn 0.5s ease-out forwards`;
+			hi.style.animationDelay = `0.5s, 0.5s, 1.2s`;
+
+			// 2. "I'm Edward Schwarz"
+			const intro = document.getElementById('intro-text-rest');
+			intro.style.animation = `fadeIn 0.01s forwards, writeStroke 2s ease-in-out forwards, fillIn 0.8s ease-out forwards`;
+			intro.style.animationDelay = `1.5s, 1.5s, 3.0s`;
+
+			// 3. Move Up
+			const group = document.getElementById('intro-group');
+			group.style.animation = `fadeShrink 1.5s ease-in-out forwards`;
+			group.style.animationDelay = `4.0s`;
+
+			// 4. "But you can call me"
+			const bridge = document.getElementById('bridge-text');
+			bridge.style.animation = `fadeIn 0.01s forwards, writeStroke 1.5s ease-in-out forwards, fillIn 0.8s ease-out forwards`;
+			bridge.style.animationDelay = `4.5s, 4.5s, 5.5s`;
+
+			// 5. "Ed"
+			// Starts 1s after previous line finishes (6.0 + 1.0 = 7.0)
+			const name = document.getElementById('name-text');
+			name.style.animation = `fadeIn 0.01s forwards, writeStroke 2s ease-in-out forwards, fillIn 1s ease-out forwards`;
+			name.style.animationDelay = `7.0s, 7.0s, 8.5s`;
+
+			// 6. Underline
+			const line = document.getElementById('underline-path');
+			line.style.animation = `drawPath 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+			line.style.animationDelay = `9.0s`;
+		}
+
+		document.addEventListener('DOMContentLoaded', replayAnimation);
+	</script>  </body> 
+
+</html>  
