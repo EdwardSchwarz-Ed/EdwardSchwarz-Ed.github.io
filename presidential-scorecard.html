@@ -7,66 +7,380 @@
 <title>Presidential Scorecard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#111;color:#eee;font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif}
-#root{max-width:640px;margin:0 auto;min-height:100vh}
-.hdr{padding:24px 16px 12px;border-bottom:1px solid #222}
-.hdr h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
-.hdr .s{font-size:13px;color:#777;margin-top:4px}
-.hdr .n{font-size:11px;color:#555;margin-top:4px;font-style:italic}
-.tabs{display:flex;border-bottom:1px solid #222}
-.tab{flex:1;padding:12px 0;border:none;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit;transition:all .2s;background:transparent;color:#666;border-bottom:2px solid transparent}
-.tab.ah{background:#1a3a1a;color:#5fd068;border-bottom-color:#5fd068}
-.tab.ar{background:#3a1a1a;color:#e74c3c;border-bottom-color:#e74c3c}
-.pills{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
-.pills::-webkit-scrollbar{display:none}
-.pill{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1a1a1a;color:#888;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
-.pill.ah{border-color:#5fd068;background:#1a3a1a;color:#eee}
-.pill.ar{border-color:#e74c3c;background:#3a1a1a;color:#eee}
-.mh{padding:4px 16px 12px}
-.mh h2{font-size:17px;font-weight:700}
-.mh p{font-size:13px;color:#888;margin-top:4px}
-.sec{padding:0 16px}
-.sec.bt{padding-top:20px;padding-bottom:32px}
-.sl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;padding:0 4px}
-.sl.g{color:#5fd068}.sl.r{color:#e74c3c}
-.cd{padding:14px 16px;margin-bottom:8px;background:#1e1e1e;border-radius:10px}
-.cd.gd{border-left:3px solid #27ae60}
-.cd.bd{border-left:3px solid #c0392b}
-.ct{display:flex;align-items:center;margin-bottom:6px}
-.md{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-weight:800;font-size:13px;margin-right:10px;flex-shrink:0}
-.m1{background:#c9a84c;color:#1a1a1a;box-shadow:0 1px 3px #c9a84c66}
-.m2{background:#8a8a8a;color:#1a1a1a;box-shadow:0 1px 3px #8a8a8a66}
-.m3{background:#a0613a;color:#1a1a1a;box-shadow:0 1px 3px #a0613a66}
-.mo{background:#2a2a2a;color:#999;font-weight:700}
-.cn{font-weight:700;font-size:15px;color:#eee}
-.cy{font-size:12px;color:#888}
-.cno{font-size:13.5px;color:#bbb;line-height:1.55;padding-left:36px}
-.ft{padding:0 16px 24px;font-size:11px;color:#555;line-height:1.6}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #111;
+  color: #eee;
+  font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+}
+#root {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+.hdr { padding: 24px 16px 12px; border-bottom: 1px solid #222; }
+.hdr h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.hdr .sub { font-size: 13px; color: #777; margin-top: 4px; }
+.hdr .note { font-size: 11px; color: #555; margin-top: 4px; font-style: italic; }
+
+.tabs { display: flex; border-bottom: 1px solid #222; }
+.tab {
+flex: 1; padding: 12px 0; border: none; cursor: pointer;
+font-weight: 700; font-size: 14px; font-family: inherit;
+transition: all 0.2s; background: transparent; color: #666;
+border-bottom: 2px solid transparent;
+}
+.tab-helped { background: #1a3a1a; color: #5fd068; border-bottom-color: #5fd068; }
+.tab-hurt { background: #3a1a1a; color: #e74c3c; border-bottom-color: #e74c3c; }
+
+.pills {
+display: flex; gap: 6px; padding: 12px 16px;
+overflow-x: auto; scrollbar-width: none;
+}
+.pills::-webkit-scrollbar { display: none; }
+.pill {
+padding: 8px 14px; border-radius: 20px; border: 1px solid #333;
+background: #1a1a1a; color: #888; font-size: 12px; font-weight: 600;
+cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.15s;
+}
+.pill-helped { border-color: #5fd068; background: #1a3a1a; color: #eee; }
+.pill-hurt { border-color: #e74c3c; background: #3a1a1a; color: #eee; }
+
+.metric-hdr { padding: 4px 16px 12px; }
+.metric-hdr h2 { font-size: 17px; font-weight: 700; }
+.metric-hdr p { font-size: 13px; color: #888; margin-top: 4px; }
+
+.section { padding: 0 16px; }
+.section-bottom { padding: 20px 16px 32px; }
+.section-label {
+font-size: 11px; font-weight: 700; text-transform: uppercase;
+letter-spacing: 1.5px; margin-bottom: 8px; padding: 0 4px;
+}
+.label-green { color: #5fd068; }
+.label-red { color: #e74c3c; }
+
+.card {
+padding: 14px 16px; margin-bottom: 8px;
+background: #1e1e1e; border-radius: 10px;
+}
+.card-good { border-left: 3px solid #27ae60; }
+.card-bad { border-left: 3px solid #c0392b; }
+.card-top { display: flex; align-items: center; margin-bottom: 6px; }
+.medal {
+display: inline-flex; align-items: center; justify-content: center;
+width: 26px; height: 26px; border-radius: 50%;
+font-weight: 800; font-size: 13px; margin-right: 10px; flex-shrink: 0;
+}
+.medal-1 { background: #c9a84c; color: #1a1a1a; }
+.medal-2 { background: #8a8a8a; color: #1a1a1a; }
+.medal-3 { background: #a0613a; color: #1a1a1a; }
+.medal-other { background: #2a2a2a; color: #999; font-weight: 700; }
+.card-name { font-weight: 700; font-size: 15px; color: #eee; }
+.card-years { font-size: 12px; color: #888; }
+.card-note { font-size: 13.5px; color: #bbb; line-height: 1.55; padding-left: 36px; }
+.footer { padding: 0 16px 24px; font-size: 11px; color: #555; line-height: 1.6; }
 </style>
+
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <p style="padding:40px 16px;color:#888;">Loading scorecard...</p>
+</div>
 <script>
-var D={helped:[{title:"Real Median Income Growth",desc:"Did the typical family actually get richer?",top:[{name:"Harry Truman",years:"1945\u201353",note:"Post-war boom created the modern middle class; median incomes surged ~30% as wartime savings met consumer demand."},{name:"Lyndon Johnson",years:"1963\u201369",note:"Great Society + booming economy drove broad-based wage gains; poverty fell sharply and real wages climbed across all quintiles."},{name:"Bill Clinton",years:"1993\u20132001",note:"Tech boom, tight labor markets, and fiscal discipline produced the strongest median income gains since the 1960s."},{name:"Dwight Eisenhower",years:"1953\u201361",note:"Steady, widely shared prosperity; the interstate highway system and GI Bill investments lifted working families."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Starting from Depression lows, New Deal programs and wartime mobilization pulled millions into the workforce and up the income ladder."}],bottom:[{name:"Herbert Hoover",years:"1929\u201333",note:"Great Depression wiped out incomes at every level; real wages collapsed alongside employment."},{name:"George W. Bush",years:"2001\u201309",note:"Median household income was lower when he left than when he arrived \u2014 the first president since tracking began to post a net decline."},{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First-term pre-COVID gains were modest and top-heavy; pandemic erased them. Second term: tariffs raised effective rates from 2.5% to 27%, pushing consumer prices higher. 75% of Americans say tariffs are raising prices, and only 12% believe policies help the middle class."},{name:"Richard Nixon",years:"1969\u201374",note:"Stagflation began eating into real wages; oil shocks and inflation eroded purchasing power."},{name:"George H.W. Bush",years:"1989\u201393",note:"Recession of 1990\u201391 stalled income growth; median households saw essentially flat real wages."}]},{title:"Life Expectancy Change",desc:"Did Americans live longer after this president served?",top:[{name:"Franklin Roosevelt",years:"1933\u201345",note:"Life expectancy rose ~7 years across his tenure \u2014 antibiotics, public health infrastructure, and New Deal sanitation programs."},{name:"Theodore Roosevelt",years:"1901\u201309",note:"Pure Food and Drug Act, meat inspection, public health reforms laid groundwork for dramatic gains in the following decades."},{name:"Lyndon Johnson",years:"1963\u201369",note:"Medicare and Medicaid gave millions of elderly and poor Americans access to healthcare for the first time."},{name:"Harry Truman",years:"1945\u201353",note:"Post-war medical advances (penicillin mass production, polio research funding) drove significant longevity gains."},{name:"Barack Obama",years:"2009\u201317",note:"ACA expanded coverage to ~20 million uninsured Americans; maternal mortality and uninsured rates dropped."}],bottom:[{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term saw the first sustained U.S. life expectancy decline in a century (COVID + opioids). Second term: the 2025 megabill cut Medicaid and SNAP, health insurance premiums surged on exchanges, and 2,000 EPA staff were cut \u2014 crippling environmental health enforcement."},{name:"Woodrow Wilson",years:"1913\u201321",note:"1918 flu pandemic killed ~675,000 Americans; WWI casualties compounded the toll."},{name:"Warren Harding",years:"1921\u201323",note:"Rolled back public health infrastructure; life expectancy gains stalled as Progressive-era programs were defunded."},{name:"George W. Bush",years:"2001\u201309",note:"Life expectancy gains flatlined; opioid prescribing accelerated dramatically under lax regulatory oversight."},{name:"Richard Nixon",years:"1969\u201374",note:"Despite creating EPA, environmental and occupational health protections were slow to impact mortality; Vietnam casualties mounted."}]},{title:"Expansion of Civil Rights & Liberties",desc:"Did they broaden freedoms and equal protection?",top:[{name:"Lyndon Johnson",years:"1963\u201369",note:"Civil Rights Act, Voting Rights Act, Fair Housing Act \u2014 the most consequential civil rights legislation since Reconstruction."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Executive Order 8802 banned employment discrimination in defense industries; appointed first Black federal judge. Mixed record due to Japanese internment."},{name:"Barack Obama",years:"2009\u201317",note:"Marriage equality achieved via judicial appointments; DACA protected Dreamers; Lilly Ledbetter Fair Pay Act."},{name:"Harry Truman",years:"1945\u201353",note:"Desegregated the military via Executive Order 9981; established the President\u2019s Committee on Civil Rights."},{name:"Theodore Roosevelt",years:"1901\u201309",note:"First president to invite a Black American (Booker T. Washington) to dine at the White House; expanded federal civil service protections."}],bottom:[{name:"Woodrow Wilson",years:"1913\u201321",note:"Re-segregated the federal workforce; screened \u2018Birth of a Nation\u2019 at the White House; suppressed dissent with the Sedition Act."},{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: Muslim travel ban, family separation, transgender military ban. Second term: rescinded LBJ\u2019s Executive Order 11246 (workplace anti-discrimination), pardoned Jan. 6 insurrectionists, ended all federal DEI programs, dismissed civil rights complaints on book banning, and DOJ Civil Rights Division was redirected away from racial discrimination cases."},{name:"Richard Nixon",years:"1969\u201374",note:"War on Drugs explicitly designed to target Black communities and anti-war activists, per aide John Ehrlichman\u2019s later admission."},{name:"George W. Bush",years:"2001\u201309",note:"PATRIOT Act mass surveillance; Guant\u00e1namo Bay indefinite detention; warrantless wiretapping programs."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Japanese American internment \u2014 120,000 people imprisoned without due process. Appears in both top and bottom for this reason."}]},{title:"Reduction in Poverty Rate",desc:"Did fewer Americans live in poverty when they left?",top:[{name:"Lyndon Johnson",years:"1963\u201369",note:"War on Poverty cut the rate from ~19% to ~12% \u2014 the single largest sustained reduction on record."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Social Security, WPA, CCC, and wartime employment pulled tens of millions out of destitution."},{name:"Bill Clinton",years:"1993\u20132001",note:"Poverty rate fell from 15.1% to 11.3%; EITC expansion was the key mechanism lifting working families."},{name:"Barack Obama",years:"2009\u201317",note:"Inherited crisis-level poverty from the Great Recession; ACA and recovery measures brought the rate back down to pre-crisis levels."},{name:"Harry Truman",years:"1945\u201353",note:"GI Bill and post-war boom moved millions of veterans and their families into the middle class."}],bottom:[{name:"Herbert Hoover",years:"1929\u201333",note:"Poverty exploded during the Depression; unemployment hit 25% with no federal safety net."},{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: pre-COVID declines reversed by pandemic. Second term: the 2025 megabill slashed Medicaid and SNAP (food assistance), with EPI analysis projecting it will sharply lower incomes for the bottom half of U.S. households. Tax cuts overwhelmingly favor the wealthy."},{name:"George W. Bush",years:"2001\u201309",note:"Poverty rate rose from 11.3% to 14.3%, driven by two recessions and stagnant wages."},{name:"Ronald Reagan",years:"1981\u201389",note:"Slashed safety-net programs; poverty spiked early in his term and remained elevated, especially among children."},{name:"Richard Nixon",years:"1969\u201374",note:"Despite proposing a guaranteed income (FAP), it never passed; stagflation pushed more families below the line."}]},{title:"Diplomatic Achievements & Conflict Avoidance",desc:"Did they strengthen alliances, avoid unnecessary wars, or negotiate durable peace?",top:[{name:"Dwight Eisenhower",years:"1953\u201361",note:"Ended the Korean War, resisted military adventurism despite pressure (Dien Bien Phu, Suez), kept Cold War from going hot."},{name:"Theodore Roosevelt",years:"1901\u201309",note:"Nobel Peace Prize for mediating the Russo-Japanese War; expanded American diplomacy without major military entanglements."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Built the Allied coalition, conceived the United Nations framework, managed an unavoidable war with extraordinary coalition diplomacy."},{name:"Jimmy Carter",years:"1977\u201381",note:"Camp David Accords remain the most durable Middle East peace agreement; Panama Canal Treaty avoided a long-term conflict."},{name:"George H.W. Bush",years:"1989\u201393",note:"Managed the end of the Cold War and German reunification without conflict; restrained Gulf War with clear objectives and exit."}],bottom:[{name:"George W. Bush",years:"2001\u201309",note:"Iraq War launched on false WMD premises \u2014 destabilized the Middle East for decades; ~4,500 U.S. dead, hundreds of thousands of Iraqi civilians."},{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: withdrew from Iran deal, Paris Agreement, strained NATO. Second term: cooled relations with closest allies (Canada, Mexico, EU), shifted support from Ukraine toward Russia, launched military action against Iran, and dismantled USAID. Chief Justice Roberts described the rule of law as \u2018endangered.\u2019"},{name:"Lyndon Johnson",years:"1963\u201369",note:"Massive Vietnam escalation based on Gulf of Tonkin; 58,000 American dead, millions of Vietnamese casualties."},{name:"Woodrow Wilson",years:"1913\u201321",note:"Entered WWI after campaigning against it; Treaty of Versailles created conditions for WWII; interventions in Latin America."},{name:"William McKinley",years:"1897\u20131901",note:"Spanish-American War launched an era of imperial expansion; Philippine-American War killed 200,000+ Filipino civilians."}]}],hurt:[{title:"Growth in National Debt (% of GDP)",desc:"Did they borrow recklessly relative to the economy?",top:[{name:"Bill Clinton",years:"1993\u20132001",note:"Only modern president to run budget surpluses; debt-to-GDP ratio fell significantly. Left office with projected surpluses."},{name:"Harry Truman",years:"1945\u201353",note:"Debt-to-GDP fell from its WWII peak of 112% down to ~70% through fiscal discipline and rapid economic growth."},{name:"Dwight Eisenhower",years:"1953\u201361",note:"Continued reducing the debt ratio through balanced budgets and strong growth; fiscal conservative in practice, not just rhetoric."},{name:"Calvin Coolidge",years:"1923\u201329",note:"Reduced the national debt in absolute terms; federal spending shrank under his watch."},{name:"Jimmy Carter",years:"1977\u201381",note:"Debt-to-GDP remained relatively stable and low (~32%); restrained spending despite economic headwinds."}],bottom:[{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: debt-to-GDP surged from ~76% to ~100% via 2017 tax cuts and pandemic spending. Second term: the 2025 megabill adds $4+ trillion in projected deficits. DOGE claimed $215B in savings but multiple analyses found this was overstated and miscalculated."},{name:"George W. Bush",years:"2001\u201309",note:"Inherited surpluses, left with $1T+ annual deficits; two wars and tax cuts swung the fiscal picture dramatically."},{name:"Ronald Reagan",years:"1981\u201389",note:"Debt nearly tripled in nominal terms; tax cuts without corresponding spending cuts created structural deficits."},{name:"Barack Obama",years:"2009\u201317",note:"Debt-to-GDP rose from ~64% to ~76%, though largely driven by inherited Great Recession and necessary stimulus spending."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Debt-to-GDP went from ~40% to 112% \u2014 but fighting the Depression and WWII were existential necessities. Context matters enormously here."}]},{title:"Increase in Income Inequality (Gini)",desc:"Did the gap between richest and poorest widen?",top:[{name:"Franklin Roosevelt",years:"1933\u201345",note:"The \u2018Great Compression\u2019 \u2014 progressive taxation, labor rights, and wage controls dramatically narrowed inequality."},{name:"Lyndon Johnson",years:"1963\u201369",note:"War on Poverty, Medicare/Medicaid, and education spending reduced inequality across racial and economic lines."},{name:"Harry Truman",years:"1945\u201353",note:"Maintained FDR\u2019s progressive tax structure; GI Bill created mass upward mobility; union membership peaked."},{name:"Dwight Eisenhower",years:"1953\u201361",note:"Top marginal tax rate stayed at 91%; middle-class prosperity was the norm, not the exception."},{name:"Bill Clinton",years:"1993\u20132001",note:"EITC expansion and tight labor markets helped the bottom quintile gain faster than in decades, though Gini still edged up."}],bottom:[{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: 2017 TCJA disproportionately favored corporations and high earners. Second term: the megabill pairs tax cuts for the wealthy with Medicaid/SNAP cuts for the poor \u2014 EPI calls it the largest single upward redistribution since 1979. 65% of Americans say his policies favor the wealthy."},{name:"Ronald Reagan",years:"1981\u201389",note:"Top tax rate slashed from 70% to 28%; union-busting (PATCO); deregulation. The Gini coefficient\u2019s modern upward trajectory starts here."},{name:"George W. Bush",years:"2001\u201309",note:"Tax cuts overwhelmingly favored top earners; capital gains preferences widened the wealth gap further."},{name:"Richard Nixon",years:"1969\u201374",note:"Wage stagnation began for lower-income workers while professional-class incomes kept rising; a structural divergence took root."},{name:"Calvin Coolidge",years:"1923\u201329",note:"The original \u2018Roaring Twenties\u2019 inequality surge \u2014 tax cuts for the wealthy, minimal regulation, speculative boom favoring capital owners."}]},{title:"Erosion of Institutional Trust",desc:"Did this president leave Americans more cynical about their own system?",top:[{name:"Dwight Eisenhower",years:"1953\u201361",note:"Trust in government exceeded 70% throughout his tenure; seen as nonpartisan, competent, honest."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"Restored faith in government during the Depression; fireside chats built a direct bond with citizens."},{name:"John F. Kennedy",years:"1961\u201363",note:"Trust peaked near 77% \u2014 highest ever recorded. Inspired civic engagement across generations."},{name:"Harry Truman",years:"1945\u201353",note:"Despite low approval at times, institutional trust remained high; the public trusted the system even when they disliked the president."},{name:"Theodore Roosevelt",years:"1901\u201309",note:"Trust-busting paradoxically built trust in government as a protector of ordinary people against monopolies."}],bottom:[{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: attacked elections, courts, media, intelligence agencies. Second term: fired the BLS commissioner over unfavorable data, attacked Fed independence, DOGE dismantled agencies. Gallup ended its presidential approval tracking entirely. Pew: 37% approval, 50% say things are worse than expected. Only 29% trust the presidency, 14% trust Congress."},{name:"Richard Nixon",years:"1969\u201374",note:"Watergate is the single most corrosive event in the history of American institutional trust. Trust in government dropped from ~60% to ~36%."},{name:"George W. Bush",years:"2001\u201309",note:"WMD falsehoods, Hurricane Katrina, and financial crisis each independently cratered public confidence; together they were devastating."},{name:"Lyndon Johnson",years:"1963\u201369",note:"Credibility gap over Vietnam \u2014 the Pentagon Papers later confirmed the administration systematically misled the public."},{name:"Woodrow Wilson",years:"1913\u201321",note:"Sedition Act prosecutions, secret disability, and heavy-handed propaganda (Committee on Public Information) planted seeds of government distrust."}]},{title:"Military Casualties from Initiated/Escalated Conflicts",desc:"The human cost of wars they chose to start or dramatically expand.",top:[{name:"Jimmy Carter",years:"1977\u201381",note:"Zero major military engagements; only U.S. combat deaths were the 8 servicemembers in the failed Iran hostage rescue."},{name:"Dwight Eisenhower",years:"1953\u201361",note:"Ended Korea, refused to enter Vietnam or intervene in multiple crises despite pressure. Remarkably restrained for a former general."},{name:"Bill Clinton",years:"1993\u20132001",note:"Kosovo air campaign had zero U.S. combat deaths; interventions in Bosnia and Haiti were limited and relatively low-casualty."},{name:"Gerald Ford",years:"1974\u201377",note:"Oversaw the final withdrawal from Vietnam; no new military engagements initiated."},{name:"Barack Obama",years:"2009\u201317",note:"Ended Iraq combat operations; Afghan surge had costs, but avoided new large-scale ground wars. Drone program is the major criticism."}],bottom:[{name:"Woodrow Wilson",years:"1913\u201321",note:"WWI entry cost 116,000 American lives after campaigning on neutrality."},{name:"Lyndon Johnson",years:"1963\u201369",note:"Escalated Vietnam from ~16,000 advisors to 535,000 troops; the bulk of the war\u2019s 58,000 U.S. deaths occurred on his watch."},{name:"George W. Bush",years:"2001\u201309",note:"~4,500 U.S. dead in Iraq (a war of choice); ~500 in Afghanistan. Hundreds of thousands of civilian casualties in both theaters."},{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term was relatively restrained militarily. Second term: launched military operations against Iran that most Americans oppose. Full casualty data is still emerging, but the conflict has spiked gas prices and drawn broad frustration."},{name:"William McKinley",years:"1897\u20131901",note:"Spanish-American War and Philippine insurrection; thousands of U.S. dead, hundreds of thousands of Filipino civilians killed."}]},{title:"Deterioration of Public Health or Environment",desc:"Did health outcomes worsen or environmental protections get rolled back?",top:[{name:"Theodore Roosevelt",years:"1901\u201309",note:"National parks system, Pure Food and Drug Act, forest reserves \u2014 invented federal environmental protection."},{name:"Richard Nixon",years:"1969\u201374",note:"Created the EPA, signed the Clean Air and Clean Water Acts. His best legacy by far, and bipartisan at the time."},{name:"Lyndon Johnson",years:"1963\u201369",note:"Clean Air Act of 1963, Wilderness Act, Medicare/Medicaid \u2014 health and environment both advanced dramatically."},{name:"Barack Obama",years:"2009\u201317",note:"Paris Climate Agreement, Clean Power Plan, ACA expanded preventive care; reduced uninsured rate to historic lows."},{name:"Franklin Roosevelt",years:"1933\u201345",note:"CCC planted 3 billion trees; rural electrification improved sanitation; Social Security created a health safety net for the elderly."}],bottom:[{name:"Donald Trump",years:"2017\u201321, 2025\u2013",note:"First term: withdrew from Paris, 100+ rollbacks, COVID response failures (400K+ dead). Second term: EPA lost 2,000 staff, moved to rescind the Endangerment Finding (basis of all climate regulation), gutted Clean Air/Water Act enforcement, cut soot and mercury protections, National Park Service lost 24% of staff, opened 59M acres of forest to logging, and the megabill cut healthcare for the poor."},{name:"George W. Bush",years:"2001\u201309",note:"Weakened Clean Air Act enforcement; opioid crisis accelerated under lax FDA oversight; rejected Kyoto Protocol."},{name:"Ronald Reagan",years:"1981\u201389",note:"Gutted EPA staffing and enforcement; slow AIDS response allowed an epidemic to metastasize; James Watt as Interior Secretary."},{name:"Calvin Coolidge",years:"1923\u201329",note:"Laissez-faire approach meant no federal response to workplace safety, environmental contamination, or public health infrastructure."},{name:"Warren Harding",years:"1921\u201323",note:"Teapot Dome scandal involved selling off public oil reserves; dismantled Progressive-era public health and conservation programs."}]}]};
+(function() {
 
-var ci=0,mi=0;
-function sc(i){ci=i;mi=0;R()}
-function sm(i){mi=i;R()}
-function mc(r){return r===0?“md m1”:r===1?“md m2”:r===2?“md m3”:“md mo”}
-function rc(e,r,b){return’<div class=“cd ‘+(b?“bd”:“gd”)+’”><div class="ct"><span class="'+mc(r)+'">’+(r+1)+’</span><div><div class="cn">’+e.name+’</div>’+(e.years?’<div class="cy">’+e.years+’</div>’:’’)+’</div></div><div class="cno">’+e.note+’</div></div>’}
-function R(){
-var ms=ci===0?D.helped:D.hurt,m=ms[mi];
-document.getElementById(“root”).innerHTML=
-‘<div class="hdr"><h1>Presidential Scorecard</h1><p class="s">Last 125 years \u00b7 Top 5 & Bottom 5 per metric</p><p class="n">Trump entry reflects combined terms (2017\u201321 & 2025\u2013present)</p></div>’+
-‘<div class="tabs"><button class=“tab’+(ci===0?” ah”:””)+’” onclick=“sc(0)”>\u2726 Helped the Country</button><button class=“tab’+(ci===1?” ar”:””)+’” onclick=“sc(1)”>\u2727 Hurt the Country</button></div>’+
-‘<div class="pills">’+ms.map(function(_,i){return’<button class=“pill’+(i===mi?(ci===0?” ah”:” ar”):””)+’” onclick=“sm(’+i+’)”>’+(i+1)+’</button>’}).join(””)+’</div>’+
-‘<div class="mh"><h2>’+m.title+’</h2><p>’+m.desc+’</p></div>’+
-‘<div class="sec"><div class=“sl ‘+(ci===0?“g”:“r”)+’”>’+(ci===0?”\u25b2 Best”:”\u25b2 Least Damage”)+’</div>’+m.top.map(function(e,i){return rc(e,i,false)}).join(””)+’</div>’+
-‘<div class="sec bt"><div class="sl r">’+(ci===0?”\u25bc Worst”:”\u25bc Most Damage”)+’</div>’+m.bottom.map(function(e,i){return rc(e,i,true)}).join(””)+’</div>’+
-‘<div class="ft">Note: Trump\u2019s second term (2025\u2013present) is still ongoing. Rankings incorporate available data through early 2026 from Brookings, Pew, EPI, CEPR, and other sources but may shift as the term continues. Many presidents appear in both positive and negative lists across different metrics \u2014 reflecting the genuine complexity of governance.</div>’;
+var helped = [
+{
+title: “Real Median Income Growth”,
+desc: “Did the typical family actually get richer?”,
+top: [
+{name:“Harry Truman”, years:“1945-53”, note:“Post-war boom created the modern middle class; median incomes surged ~30% as wartime savings met consumer demand.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Great Society + booming economy drove broad-based wage gains; poverty fell sharply and real wages climbed across all quintiles.”},
+{name:“Bill Clinton”, years:“1993-2001”, note:“Tech boom, tight labor markets, and fiscal discipline produced the strongest median income gains since the 1960s.”},
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Steady, widely shared prosperity; the interstate highway system and GI Bill investments lifted working families.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Starting from Depression lows, New Deal programs and wartime mobilization pulled millions into the workforce and up the income ladder.”}
+],
+bottom: [
+{name:“Herbert Hoover”, years:“1929-33”, note:“Great Depression wiped out incomes at every level; real wages collapsed alongside employment.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Median household income was lower when he left than when he arrived - the first president since tracking began to post a net decline.”},
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First-term pre-COVID gains were modest and top-heavy; pandemic erased them. Second term: tariffs raised effective rates from 2.5% to 27%, pushing consumer prices higher. 75% of Americans say tariffs are raising prices, and only 12% believe policies help the middle class.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Stagflation began eating into real wages; oil shocks and inflation eroded purchasing power.”},
+{name:“George H.W. Bush”, years:“1989-93”, note:“Recession of 1990-91 stalled income growth; median households saw essentially flat real wages.”}
+]
+},
+{
+title: “Life Expectancy Change”,
+desc: “Did Americans live longer after this president served?”,
+top: [
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Life expectancy rose ~7 years across his tenure - antibiotics, public health infrastructure, and New Deal sanitation programs.”},
+{name:“Theodore Roosevelt”, years:“1901-09”, note:“Pure Food and Drug Act, meat inspection, public health reforms laid groundwork for dramatic gains in the following decades.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Medicare and Medicaid gave millions of elderly and poor Americans access to healthcare for the first time.”},
+{name:“Harry Truman”, years:“1945-53”, note:“Post-war medical advances (penicillin mass production, polio research funding) drove significant longevity gains.”},
+{name:“Barack Obama”, years:“2009-17”, note:“ACA expanded coverage to ~20 million uninsured Americans; maternal mortality and uninsured rates dropped.”}
+],
+bottom: [
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term saw the first sustained U.S. life expectancy decline in a century (COVID + opioids). Second term: the 2025 megabill cut Medicaid and SNAP, health insurance premiums surged on exchanges, and 2,000 EPA staff were cut - crippling environmental health enforcement.”},
+{name:“Woodrow Wilson”, years:“1913-21”, note:“1918 flu pandemic killed ~675,000 Americans; WWI casualties compounded the toll.”},
+{name:“Warren Harding”, years:“1921-23”, note:“Rolled back public health infrastructure; life expectancy gains stalled as Progressive-era programs were defunded.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Life expectancy gains flatlined; opioid prescribing accelerated dramatically under lax regulatory oversight.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Despite creating EPA, environmental and occupational health protections were slow to impact mortality; Vietnam casualties mounted.”}
+]
+},
+{
+title: “Expansion of Civil Rights & Liberties”,
+desc: “Did they broaden freedoms and equal protection?”,
+top: [
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Civil Rights Act, Voting Rights Act, Fair Housing Act - the most consequential civil rights legislation since Reconstruction.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Executive Order 8802 banned employment discrimination in defense industries; appointed first Black federal judge. Mixed record due to Japanese internment.”},
+{name:“Barack Obama”, years:“2009-17”, note:“Marriage equality achieved via judicial appointments; DACA protected Dreamers; Lilly Ledbetter Fair Pay Act.”},
+{name:“Harry Truman”, years:“1945-53”, note:“Desegregated the military via Executive Order 9981; established the President’s Committee on Civil Rights.”},
+{name:“Theodore Roosevelt”, years:“1901-09”, note:“First president to invite a Black American (Booker T. Washington) to dine at the White House; expanded federal civil service protections.”}
+],
+bottom: [
+{name:“Woodrow Wilson”, years:“1913-21”, note:“Re-segregated the federal workforce; screened ‘Birth of a Nation’ at the White House; suppressed dissent with the Sedition Act.”},
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: Muslim travel ban, family separation, transgender military ban. Second term: rescinded LBJ’s Executive Order 11246 (workplace anti-discrimination), pardoned Jan. 6 insurrectionists, ended all federal DEI programs, dismissed civil rights complaints on book banning, and DOJ Civil Rights Division was redirected away from racial discrimination cases.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“War on Drugs explicitly designed to target Black communities and anti-war activists, per aide John Ehrlichman’s later admission.”},
+{name:“George W. Bush”, years:“2001-09”, note:“PATRIOT Act mass surveillance; Guantanamo Bay indefinite detention; warrantless wiretapping programs.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Japanese American internment - 120,000 people imprisoned without due process. Appears in both top and bottom for this reason.”}
+]
+},
+{
+title: “Reduction in Poverty Rate”,
+desc: “Did fewer Americans live in poverty when they left?”,
+top: [
+{name:“Lyndon Johnson”, years:“1963-69”, note:“War on Poverty cut the rate from ~19% to ~12% - the single largest sustained reduction on record.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Social Security, WPA, CCC, and wartime employment pulled tens of millions out of destitution.”},
+{name:“Bill Clinton”, years:“1993-2001”, note:“Poverty rate fell from 15.1% to 11.3%; EITC expansion was the key mechanism lifting working families.”},
+{name:“Barack Obama”, years:“2009-17”, note:“Inherited crisis-level poverty from the Great Recession; ACA and recovery measures brought the rate back down to pre-crisis levels.”},
+{name:“Harry Truman”, years:“1945-53”, note:“GI Bill and post-war boom moved millions of veterans and their families into the middle class.”}
+],
+bottom: [
+{name:“Herbert Hoover”, years:“1929-33”, note:“Poverty exploded during the Depression; unemployment hit 25% with no federal safety net.”},
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: pre-COVID declines reversed by pandemic. Second term: the 2025 megabill slashed Medicaid and SNAP (food assistance), with EPI analysis projecting it will sharply lower incomes for the bottom half of U.S. households. Tax cuts overwhelmingly favor the wealthy.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Poverty rate rose from 11.3% to 14.3%, driven by two recessions and stagnant wages.”},
+{name:“Ronald Reagan”, years:“1981-89”, note:“Slashed safety-net programs; poverty spiked early in his term and remained elevated, especially among children.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Despite proposing a guaranteed income (FAP), it never passed; stagflation pushed more families below the line.”}
+]
+},
+{
+title: “Diplomatic Achievements & Conflict Avoidance”,
+desc: “Did they strengthen alliances, avoid unnecessary wars, or negotiate durable peace?”,
+top: [
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Ended the Korean War, resisted military adventurism despite pressure (Dien Bien Phu, Suez), kept Cold War from going hot.”},
+{name:“Theodore Roosevelt”, years:“1901-09”, note:“Nobel Peace Prize for mediating the Russo-Japanese War; expanded American diplomacy without major military entanglements.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Built the Allied coalition, conceived the United Nations framework, managed an unavoidable war with extraordinary coalition diplomacy.”},
+{name:“Jimmy Carter”, years:“1977-81”, note:“Camp David Accords remain the most durable Middle East peace agreement; Panama Canal Treaty avoided a long-term conflict.”},
+{name:“George H.W. Bush”, years:“1989-93”, note:“Managed the end of the Cold War and German reunification without conflict; restrained Gulf War with clear objectives and exit.”}
+],
+bottom: [
+{name:“George W. Bush”, years:“2001-09”, note:“Iraq War launched on false WMD premises - destabilized the Middle East for decades; ~4,500 U.S. dead, hundreds of thousands of Iraqi civilians.”},
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: withdrew from Iran deal, Paris Agreement, strained NATO. Second term: cooled relations with closest allies (Canada, Mexico, EU), shifted support from Ukraine toward Russia, launched military action against Iran, and dismantled USAID. Chief Justice Roberts described the rule of law as ‘endangered.’”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Massive Vietnam escalation based on Gulf of Tonkin; 58,000 American dead, millions of Vietnamese casualties.”},
+{name:“Woodrow Wilson”, years:“1913-21”, note:“Entered WWI after campaigning against it; Treaty of Versailles created conditions for WWII; interventions in Latin America.”},
+{name:“William McKinley”, years:“1897-1901”, note:“Spanish-American War launched an era of imperial expansion; Philippine-American War killed 200,000+ Filipino civilians.”}
+]
 }
-R();
+];
+
+var hurt = [
+{
+title: “Growth in National Debt (% of GDP)”,
+desc: “Did they borrow recklessly relative to the economy?”,
+top: [
+{name:“Bill Clinton”, years:“1993-2001”, note:“Only modern president to run budget surpluses; debt-to-GDP ratio fell significantly. Left office with projected surpluses.”},
+{name:“Harry Truman”, years:“1945-53”, note:“Debt-to-GDP fell from its WWII peak of 112% down to ~70% through fiscal discipline and rapid economic growth.”},
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Continued reducing the debt ratio through balanced budgets and strong growth; fiscal conservative in practice, not just rhetoric.”},
+{name:“Calvin Coolidge”, years:“1923-29”, note:“Reduced the national debt in absolute terms; federal spending shrank under his watch.”},
+{name:“Jimmy Carter”, years:“1977-81”, note:“Debt-to-GDP remained relatively stable and low (~32%); restrained spending despite economic headwinds.”}
+],
+bottom: [
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: debt-to-GDP surged from ~76% to ~100% via 2017 tax cuts and pandemic spending. Second term: the 2025 megabill adds $4+ trillion in projected deficits. DOGE claimed $215B in savings but multiple analyses found this was overstated and miscalculated.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Inherited surpluses, left with $1T+ annual deficits; two wars and tax cuts swung the fiscal picture dramatically.”},
+{name:“Ronald Reagan”, years:“1981-89”, note:“Debt nearly tripled in nominal terms; tax cuts without corresponding spending cuts created structural deficits.”},
+{name:“Barack Obama”, years:“2009-17”, note:“Debt-to-GDP rose from ~64% to ~76%, though largely driven by inherited Great Recession and necessary stimulus spending.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Debt-to-GDP went from ~40% to 112% - but fighting the Depression and WWII were existential necessities. Context matters enormously here.”}
+]
+},
+{
+title: “Increase in Income Inequality (Gini)”,
+desc: “Did the gap between richest and poorest widen?”,
+top: [
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“The ‘Great Compression’ - progressive taxation, labor rights, and wage controls dramatically narrowed inequality.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“War on Poverty, Medicare/Medicaid, and education spending reduced inequality across racial and economic lines.”},
+{name:“Harry Truman”, years:“1945-53”, note:“Maintained FDR’s progressive tax structure; GI Bill created mass upward mobility; union membership peaked.”},
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Top marginal tax rate stayed at 91%; middle-class prosperity was the norm, not the exception.”},
+{name:“Bill Clinton”, years:“1993-2001”, note:“EITC expansion and tight labor markets helped the bottom quintile gain faster than in decades, though Gini still edged up.”}
+],
+bottom: [
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: 2017 TCJA disproportionately favored corporations and high earners. Second term: the megabill pairs tax cuts for the wealthy with Medicaid/SNAP cuts for the poor - EPI calls it the largest single upward redistribution since 1979. 65% of Americans say his policies favor the wealthy.”},
+{name:“Ronald Reagan”, years:“1981-89”, note:“Top tax rate slashed from 70% to 28%; union-busting (PATCO); deregulation. The Gini coefficient’s modern upward trajectory starts here.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Tax cuts overwhelmingly favored top earners; capital gains preferences widened the wealth gap further.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Wage stagnation began for lower-income workers while professional-class incomes kept rising; a structural divergence took root.”},
+{name:“Calvin Coolidge”, years:“1923-29”, note:“The original ‘Roaring Twenties’ inequality surge - tax cuts for the wealthy, minimal regulation, speculative boom favoring capital owners.”}
+]
+},
+{
+title: “Erosion of Institutional Trust”,
+desc: “Did this president leave Americans more cynical about their own system?”,
+top: [
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Trust in government exceeded 70% throughout his tenure; seen as nonpartisan, competent, honest.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“Restored faith in government during the Depression; fireside chats built a direct bond with citizens.”},
+{name:“John F. Kennedy”, years:“1961-63”, note:“Trust peaked near 77% - highest ever recorded. Inspired civic engagement across generations.”},
+{name:“Harry Truman”, years:“1945-53”, note:“Despite low approval at times, institutional trust remained high; the public trusted the system even when they disliked the president.”},
+{name:“Theodore Roosevelt”, years:“1901-09”, note:“Trust-busting paradoxically built trust in government as a protector of ordinary people against monopolies.”}
+],
+bottom: [
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: attacked elections, courts, media, intelligence agencies. Second term: fired the BLS commissioner over unfavorable data, attacked Fed independence, DOGE dismantled agencies. Gallup ended its presidential approval tracking entirely. Pew: 37% approval, 50% say things are worse than expected. Only 29% trust the presidency, 14% trust Congress.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Watergate is the single most corrosive event in the history of American institutional trust. Trust in government dropped from ~60% to ~36%.”},
+{name:“George W. Bush”, years:“2001-09”, note:“WMD falsehoods, Hurricane Katrina, and financial crisis each independently cratered public confidence; together they were devastating.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Credibility gap over Vietnam - the Pentagon Papers later confirmed the administration systematically misled the public.”},
+{name:“Woodrow Wilson”, years:“1913-21”, note:“Sedition Act prosecutions, secret disability, and heavy-handed propaganda (Committee on Public Information) planted seeds of government distrust.”}
+]
+},
+{
+title: “Military Casualties from Initiated/Escalated Conflicts”,
+desc: “The human cost of wars they chose to start or dramatically expand.”,
+top: [
+{name:“Jimmy Carter”, years:“1977-81”, note:“Zero major military engagements; only U.S. combat deaths were the 8 servicemembers in the failed Iran hostage rescue.”},
+{name:“Dwight Eisenhower”, years:“1953-61”, note:“Ended Korea, refused to enter Vietnam or intervene in multiple crises despite pressure. Remarkably restrained for a former general.”},
+{name:“Bill Clinton”, years:“1993-2001”, note:“Kosovo air campaign had zero U.S. combat deaths; interventions in Bosnia and Haiti were limited and relatively low-casualty.”},
+{name:“Gerald Ford”, years:“1974-77”, note:“Oversaw the final withdrawal from Vietnam; no new military engagements initiated.”},
+{name:“Barack Obama”, years:“2009-17”, note:“Ended Iraq combat operations; Afghan surge had costs, but avoided new large-scale ground wars. Drone program is the major criticism.”}
+],
+bottom: [
+{name:“Woodrow Wilson”, years:“1913-21”, note:“WWI entry cost 116,000 American lives after campaigning on neutrality.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Escalated Vietnam from ~16,000 advisors to 535,000 troops; the bulk of the war’s 58,000 U.S. deaths occurred on his watch.”},
+{name:“George W. Bush”, years:“2001-09”, note:“~4,500 U.S. dead in Iraq (a war of choice); ~500 in Afghanistan. Hundreds of thousands of civilian casualties in both theaters.”},
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term was relatively restrained militarily. Second term: launched military operations against Iran that most Americans oppose. Full casualty data is still emerging, but the conflict has spiked gas prices and drawn broad frustration.”},
+{name:“William McKinley”, years:“1897-1901”, note:“Spanish-American War and Philippine insurrection; thousands of U.S. dead, hundreds of thousands of Filipino civilians killed.”}
+]
+},
+{
+title: “Deterioration of Public Health or Environment”,
+desc: “Did health outcomes worsen or environmental protections get rolled back?”,
+top: [
+{name:“Theodore Roosevelt”, years:“1901-09”, note:“National parks system, Pure Food and Drug Act, forest reserves - invented federal environmental protection.”},
+{name:“Richard Nixon”, years:“1969-74”, note:“Created the EPA, signed the Clean Air and Clean Water Acts. His best legacy by far, and bipartisan at the time.”},
+{name:“Lyndon Johnson”, years:“1963-69”, note:“Clean Air Act of 1963, Wilderness Act, Medicare/Medicaid - health and environment both advanced dramatically.”},
+{name:“Barack Obama”, years:“2009-17”, note:“Paris Climate Agreement, Clean Power Plan, ACA expanded preventive care; reduced uninsured rate to historic lows.”},
+{name:“Franklin Roosevelt”, years:“1933-45”, note:“CCC planted 3 billion trees; rural electrification improved sanitation; Social Security created a health safety net for the elderly.”}
+],
+bottom: [
+{name:“Donald Trump”, years:“2017-21, 2025-”, note:“First term: withdrew from Paris, 100+ rollbacks, COVID response failures (400K+ dead). Second term: EPA lost 2,000 staff, moved to rescind the Endangerment Finding (basis of all climate regulation), gutted Clean Air/Water Act enforcement, cut soot and mercury protections, National Park Service lost 24% of staff, opened 59M acres of forest to logging, and the megabill cut healthcare for the poor.”},
+{name:“George W. Bush”, years:“2001-09”, note:“Weakened Clean Air Act enforcement; opioid crisis accelerated under lax FDA oversight; rejected Kyoto Protocol.”},
+{name:“Ronald Reagan”, years:“1981-89”, note:“Gutted EPA staffing and enforcement; slow AIDS response allowed an epidemic to metastasize; James Watt as Interior Secretary.”},
+{name:“Calvin Coolidge”, years:“1923-29”, note:“Laissez-faire approach meant no federal response to workplace safety, environmental contamination, or public health infrastructure.”},
+{name:“Warren Harding”, years:“1921-23”, note:“Teapot Dome scandal involved selling off public oil reserves; dismantled Progressive-era public health and conservation programs.”}
+]
+}
+];
+
+var allData = { helped: helped, hurt: hurt };
+var catIdx = 0;
+var metricIdx = 0;
+
+function getMedalClass(rank) {
+if (rank === 0) return “medal medal-1”;
+if (rank === 1) return “medal medal-2”;
+if (rank === 2) return “medal medal-3”;
+return “medal medal-other”;
+}
+
+function renderCard(entry, rank, isBad) {
+var cls = isBad ? “card card-bad” : “card card-good”;
+var html = ‘<div class="' + cls + '">’;
+html += ‘<div class="card-top">’;
+html += ‘<span class="' + getMedalClass(rank) + '">’ + (rank + 1) + ‘</span>’;
+html += ‘<div>’;
+html += ‘<div class="card-name">’ + entry.name + ‘</div>’;
+if (entry.years) {
+html += ‘<div class="card-years">’ + entry.years + ‘</div>’;
+}
+html += ‘</div></div>’;
+html += ‘<div class="card-note">’ + entry.note + ‘</div>’;
+html += ‘</div>’;
+return html;
+}
+
+function render() {
+var metrics = catIdx === 0 ? allData.helped : allData.hurt;
+var metric = metrics[metricIdx];
+
+var html = ‘’;
+
+// Header
+html += ‘<div class="hdr">’;
+html += ‘<h1>Presidential Scorecard</h1>’;
+html += ‘<p class="sub">Last 125 years · Top 5 & Bottom 5 per metric</p>’;
+html += ‘<p class="note">Trump entry reflects combined terms (2017-21 & 2025-present)</p>’;
+html += ‘</div>’;
+
+// Category tabs
+html += ‘<div class="tabs">’;
+html += ‘<button class="tab' + (catIdx === 0 ? ' tab-helped' : '') + '" onclick="switchCat(0)">’;
+html += ‘\u2726 Helped the Country</button>’;
+html += ‘<button class="tab' + (catIdx === 1 ? ' tab-hurt' : '') + '" onclick="switchCat(1)">’;
+html += ‘\u2727 Hurt the Country</button>’;
+html += ‘</div>’;
+
+// Metric pills
+html += ‘<div class="pills">’;
+for (var i = 0; i < metrics.length; i++) {
+var pillClass = “pill”;
+if (i === metricIdx) {
+pillClass += catIdx === 0 ? “ pill-helped” : “ pill-hurt”;
+}
+html += ‘<button class="' + pillClass + '" onclick="switchMetric(' + i + ')">’ + (i + 1) + ‘</button>’;
+}
+html += ‘</div>’;
+
+// Metric header
+html += ‘<div class="metric-hdr">’;
+html += ‘<h2>’ + metric.title + ‘</h2>’;
+html += ‘<p>’ + metric.desc + ‘</p>’;
+html += ‘</div>’;
+
+// Top 5
+html += ‘<div class="section">’;
+var topLabel = catIdx === 0 ? “\u25B2 Best” : “\u25B2 Least Damage”;
+var topColor = catIdx === 0 ? “label-green” : “label-red”;
+html += ‘<div class="section-label ' + topColor + '">’ + topLabel + ‘</div>’;
+for (var j = 0; j < metric.top.length; j++) {
+html += renderCard(metric.top[j], j, false);
+}
+html += ‘</div>’;
+
+// Bottom 5
+html += ‘<div class="section-bottom">’;
+var bottomLabel = catIdx === 0 ? “\u25BC Worst” : “\u25BC Most Damage”;
+html += ‘<div class="section-label label-red">’ + bottomLabel + ‘</div>’;
+for (var k = 0; k < metric.bottom.length; k++) {
+html += renderCard(metric.bottom[k], k, true);
+}
+html += ‘</div>’;
+
+// Footer
+html += ‘<div class="footer">’;
+html += ‘Note: Trump's second term (2025-present) is still ongoing. Rankings incorporate available data through early 2026 from Brookings, Pew, EPI, CEPR, and other sources but may shift as the term continues. Many presidents appear in both positive and negative lists across different metrics - reflecting the genuine complexity of governance.’;
+html += ‘</div>’;
+
+document.getElementById(“root”).innerHTML = html;
+}
+
+window.switchCat = function(i) {
+catIdx = i;
+metricIdx = 0;
+render();
+};
+
+window.switchMetric = function(i) {
+metricIdx = i;
+render();
+};
+
+render();
+
+})();
 </script>
 
 </body>
